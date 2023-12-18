@@ -6,16 +6,17 @@ import matplotlib.pyplot as plt
 
 sdr = rtlsdr.RtlSdr()                       # Inicializar el dispositivo RTL-SDR
 
-sample_rate = 2.4e6                         # Tasa de muestreo en muestras por segundo
+sample_rate = 2.4e6                         # Tasa de muestreo en muestras por segundo (3MHz)
                                             # The maximum sample rate is 3.2 MS/s (mega samples per second). 
                                             # However, the RTL-SDR is unstable at this rate and may drop samples.
                                             # The maximum sample rate that does not drop samples is 2.56 MS/s.
 
 # Configurar parámetros
 # Rafael Micro R820T/2/R860 	24 – 1766 MHz (Can be improved to ~13 - 1864 MHz with experimental drivers)
+# Experimentalmente capta desde 12MHz 
 
 sdr.sample_rate = sample_rate               # Tasa de muestreo en muestras por segundo
-sdr.center_freq = 100000000                  # Frecuencia central en Hz (99.9 MHz)
+sdr.center_freq = 99.9e6                  # Frecuencia central en Hz (99.9 MHz)
 sdr.gain = 42                               # Ganancia del receptor
 
 output_file = "fm999.bin"                   # Nombre del archivo de salida con las muestras capturadas
@@ -56,16 +57,17 @@ else:
 # -------------------------------------- Ploteos ---------------------------------------------------------
 
 # Muestras capturadas
-plt.plot(np.abs(samples_buffer))
-plt.xlabel('Muestras')
-plt.ylabel('Amplitud')
-plt.title('Muestras capturadas (ABS)')
-plt.show()
-
 plt.plot(samples_buffer)
 plt.xlabel('Muestras')
 plt.ylabel('Amplitud')
 plt.title('Muestras capturadas')
+plt.show()
+
+# Muestras capturadas
+plt.plot(np.abs(samples_buffer))
+plt.xlabel('Muestras')
+plt.ylabel('Amplitud')
+plt.title('Muestras capturadas absolutas')
 plt.show()
 
 
